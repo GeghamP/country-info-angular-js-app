@@ -1,0 +1,8 @@
+.tooltip.custom .tooltip-inner{
+	background-color:#E0FFFF;
+	color:black;
+}
+		
+.tooltip.custom .tooltip-arrow{
+	display:none;
+}

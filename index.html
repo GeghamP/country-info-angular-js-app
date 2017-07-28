@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+
+<html ng-app="myApp" lang='en'>
+<head>
+	<meta charset="UTF-8">
+	 <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="myStyle.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
+	<style>
+		
+	</style>
+		
+	<script>
+		$(document).ready(function(){
+			$('[data-toggle="popover"]').popover();   
+		});
+	</script>
+</head>
+
+<body  data-ng-controller="myCtrl" >
+
+	<div class="container" >
+		 
+		<div class="row">
+			<div class="col-lg-8 col-sm-12 col-md-4 form-group">
+				<select id= "sr" data-ng-model="search.region" class="form-control" data-ng-options="region for region in regions" data-ng-change="changeSelect(search)">
+					<option value="">Բոլորը</option>
+				</select>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>
+								<span data-ng-click="sortBy('code')"  data-ng-class="{'glyphicon glyphicon-chevron-up':isSorted('asc','code'), 'glyphicon glyphicon-chevron-down':isSorted('desc','code')}">Code</span>
+							</th>
+							<th>
+								<span data-ng-click="sortBy('name')" data-ng-class="{'glyphicon glyphicon-chevron-up':isSorted('asc','name'), 'glyphicon glyphicon-chevron-down':isSorted('desc','name')}">Name</span>
+							</th>
+							<th>
+								<span data-ng-click="sortBy('+-population')"  data-ng-class="{'glyphicon glyphicon-chevron-up':isSorted('asc','+-population'), 'glyphicon glyphicon-chevron-down':isSorted('desc','+-population')}">Population</span>
+							</th>
+						</tr>
+					</thead>
+	
+					<tbody>
+						<tr data-ng-repeat="x in filtered = (countries|filter:search |orderBy:orderType:reversed)|startFrom:(currentPage-1)*pageSize |limitTo:pageSize"
+						data-ng-click="select(x)" data-ng-class="{'active':x.code==selected.code}" uib-tooltip="{{x.name}}>>սեղմեք ավելի ինֆորմացիա ստանալու համար.." tooltip-class="custom">
+							<td data-ng-bind="x.code">
+							</td>
+							<td data-ng-bind="x.name">
+							</td>
+							<td data-ng-bind="x.population">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<ul uib-pagination total-items="filtered.length" data-ng-model="currentPage" items-per-page="pageSize" boundary-links="true"
+				previous-text="Նախորդ" next-text="Հաջորդ" first-text="<<" last-text=">>" data-ng-change="show_info=false">
+				
+				</ul>
+			</div>
+			<div class="col-lg-4 col-sm-12 form-group" data-ng-if="show_info">
+				<div class="row">
+					<div class="col-lg-6">
+						<img data-ng-src="{{selected.img}}" width="100px" class=" img-responsnive img-thumbnail">
+					</div>
+					<div class="col-lg-6">
+						<img data-ng-src="{{selected.map}}" width="100px" class=" img-responsnive img-thumbnail">
+					</div>
+				</div>
+				<div>
+					<label for="anun">Երկրի անվանումը:</label>
+					<input type="text" class="form-control" id="anun" data-ng-model="selected.name" readonly>
+					<label for="pop">Բնակչությունը:</label>
+					<input type="text" class="form-control" id="pop" data-ng-model="selected.population" readonly>
+					<label for="des">Տեղեկատվություն:</label>
+					<textarea rows="15" class="form-control" data-ng-model="selected.desc" readonly></textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="myApp.js"></script>
+	
+</body>
+</html>
